@@ -21,8 +21,11 @@ import Primes: isprime
 export Modulus,getInvs,hasInverse
 
 struct Modulus{N} <: Number
-    a::Number
-    Modulus{N}(a) where N = new{N}(mod(a,N))
+    a::Integer
+    function Modulus{N}(a) where N
+        @assert N isa Integer
+        new{N}(mod(a,N))
+    end
     Modulus{N}(x::Modulus{N}) where N = Modulus{N}(x.a)
 end
 
