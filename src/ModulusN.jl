@@ -1,4 +1,5 @@
 #Code written by Scott Hanna 6/27/2019
+#Updated:7/30/19
 #Contact: shanna7@jhu.edu
 #
 #The Modulus type is here defined as the residue class of a modulo n where
