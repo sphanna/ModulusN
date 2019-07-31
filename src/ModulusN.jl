@@ -45,8 +45,9 @@ import Primes: isprime
 export getVal,getMod,Modulus,getInvs,hasInverse
 
 struct Modulus{N} <: Number
-    a::Number
+    a::Real
     function Modulus{N}(a) where N
+        @assert N isa Real
         new{N}(mod(a,N))
     end
     Modulus{N}(x::Modulus{N}) where N = Modulus{N}(x.a)
