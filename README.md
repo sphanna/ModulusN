@@ -1,19 +1,15 @@
 # ModulusN
 Julia support for Modulus type
 
-The Modulus type is here defined as the residue class of a modulo n where
-[a] = a + nZ := {a +nz | z ∈ Z}
-the quotient set with respect to Rn, is often denoted by Z/nZ.
-Thus, Z/nZ := {[0], [1], . . . , [n − 1]}.
+The Modulus type is here defined as the residue class of a modulo n where [a] = a + nZ := {a +nz | z ∈ Z} the quotient set with respect to Rn, is often denoted by Z/nZ.  Thus, Z/nZ := {[0], [1], . . . , [n − 1]}.
 
-The set of all classes modulo n is a field only in the case that n is prime.
-i.e. it only guarantees an inverse element if n is prime.  If n is not prime
-it is possible that a particular value, a,has an inverse (that is a*a^-1 = 1),
-but the set is still not considered a field.
+The set of all classes modulo n is a field only in the case that n is prime, i.e. it only guarantees an inverse element if n is prime.  If n is not prime it is possible that a particular value, a,has an inverse (that is a*a^-1 = 1), but the set is still not considered a field.
+
+Modulus real values are also supported, however inverse elements and Linear Algebra functionality will not work with non-Integer Modulus Types.
 
 ## Example Usage
-
 Declaration:
+Declare a Modulus type with the format: Modulus{N}(a) where N is the modifier and a is the value.  This will create a new type of Modulus{N} and the associated stored value for that type will be mod(a,N).
 ```julia
 julia> using ModulusN
 julia> Modulus{4}(10)
