@@ -1,5 +1,5 @@
 #Code written by Scott Hanna 6/27/2019
-#Updated:7/30/19
+#Last Update: 7/31/2019
 #Contact: shanna7@jhu.edu
 #
 #The Modulus type is here defined as the residue class of a modulo n where
@@ -14,12 +14,12 @@
 module ModulusN
 
 using LinearAlgebra, Primes, Random
-import Base: +,-,*,/,zero,one,abs,abs2,^,<,<=,>,>=,inv
+import Base: +,-,*,/,zero,one,abs,abs2,^,<,<=,>,>=,inv,isnan
 import LinearAlgebra: conj
 import Random: rand
 import Primes: isprime
 
-export Modulus,getInvs,hasInverse
+export getVal,getMod,Modulus,getInvs,hasInverse
 
 struct Modulus{N} <: Number
     a::Integer
@@ -30,63 +30,79 @@ struct Modulus{N} <: Number
     Modulus{N}(x::Modulus{N}) where N = Modulus{N}(x.a)
 end
 
-function Base.:+(x::Modulus{N},y::Modulus{N}) where N
+function getVal(x::Modulus{N}) where N
+    return x.a
+end
+
+function getMod(x::Modulus{N}) where N
+    return N
+end
+
+function +(x::Modulus{N},y::Modulus{N}) where N
     Modulus{N}(x.a + y.a)
 end
 
-function Base.:-(x::Modulus{N},y::Modulus{N}) where N
+function -(x::Modulus{N},y::Modulus{N}) where N
     Modulus{N}(x.a - y.a)
 end
 
-function Base.:*(x::Modulus{N},y::Modulus{N}) where N
+function -(x::Modulus{N}) where N
+    Modulus{N}(-x.a)
+end
+
+function *(x::Modulus{N},y::Modulus{N}) where N
     Modulus{N}(x.a * y.a)
 end
 
-function Base.:/(x::Modulus{N},y::Modulus{N}) where N
+function /(x::Modulus{N},y::Modulus{N}) where N
     return inv(y) * x
 end
 
-function Base.:zero(x::Modulus{N}) where N
+function zero(x::Modulus{N}) where N
     return Modulus{N}(0)
 end
 
-function Base.:one(x::Modulus{N}) where N
+function one(x::Modulus{N}) where N
     return Modulus{N}(1)
 end
 
-function Base.:abs(x::Modulus{N}) where N
+function abs(x::Modulus{N}) where N
     return Modulus{N}(abs(x.a))
 end
 
-function Base.:^(x::Modulus{N}, y::Int) where N
+function ^(x::Modulus{N}, y::Int) where N
     return Modulus{N}(x.a^y)
 end
 
-function Base.:abs2(x::Modulus{N}) where N
+function abs2(x::Modulus{N}) where N
     return abs(x)^2
 end
 
-function Base.:<(x::Modulus{N}, y::Modulus{N}) where N
+function <(x::Modulus{N}, y::Modulus{N}) where N
     return x.a < y.a
 end
 
-function Base.:<=(x::Modulus{N}, y::Modulus{N}) where N
+function <=(x::Modulus{N}, y::Modulus{N}) where N
     return x.a <= y.a
 end
 
-function Base.:>(x::Modulus{N}, y::Modulus{N}) where N
+function >(x::Modulus{N}, y::Modulus{N}) where N
     return x.a > y.a
 end
 
-function Base.:>=(x::Modulus{N}, y::Modulus{N}) where N
+function >=(x::Modulus{N}, y::Modulus{N}) where N
     return x.a >= y.a
 end
 
-function LinearAlgebra.conj(x::Modulus{N}) where N
+function isnan(x::Modulus{N}) where N
+    return isnan(x.a)
+end
+
+function conj(x::Modulus{N}) where N
     return abs(x)
 end
 
-function Base.inv(x::Modulus{N}) where N
+function inv(x::Modulus{N}) where N
     invs = getInvs(x)
     if length(invs) == 0
         error("No inverse exists.")
@@ -108,6 +124,6 @@ function hasInverse(x::Modulus{N}) where N
     return length(getInvs(x)) > 0
 end
 
-Random.rand(rng::AbstractRNG, ::Random.SamplerType{Modulus{N}}) where N = Modulus{N}(rand(rng,Int))
+rand(rng::AbstractRNG, ::Random.SamplerType{Modulus{N}}) where N = Modulus{N}(rand(rng,Int))
 
 end #end module ModulusN
