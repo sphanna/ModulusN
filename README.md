@@ -11,7 +11,7 @@ i.e. it only guarantees an inverse element if n is prime.  If n is not prime
 it is possible that a particular value, a,has an inverse (that is a*a^-1 = 1),
 but the set is still not considered a field.
 
-Example Usage:
+## Example Usage
 
 Declaration:
 ```julia
@@ -38,7 +38,6 @@ Modulus{4}(2)
 The module provides support for the following simple operations and conditionals: +,-,*,/,^,abs,abs2,<,>,<=,>=
 
 In addition support for finding an inverse element is also implemented:
-Declaration:
 ```julia
 julia> a = Modulus{7}(4)
 Modulus{7}(4)
