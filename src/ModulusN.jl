@@ -21,29 +21,6 @@ import Primes: isprime
 
 export getVal,getMod,Modulus,getInvs,hasInverse
 
-#Code written by Scott Hanna 6/27/2019
-#Last Update: 7/31/2019
-#Contact: shanna7@jhu.edu
-#
-#The Modulus type is here defined as the residue class of a modulo n where
-#[a] = a + nZ := {a +nz | z ∈ Z}
-#the quotient set with respect to Rn, is often denoted by Z/nZ.
-#Thus, Z/nZ := {[0], [1], . . . , [n − 1]}.
-#
-#The set of all classes modulo n is a field only in the case that n is prime.
-#i.e. it only guarantees an inverse element if n is prime.  If n is not prime
-#it is possible that a particular value, a,has an inverse (that is a*a^-1 = 1),
-#but the set is still not considered a field.
-module ModulusN
-
-using LinearAlgebra, Primes, Random
-import Base: +,-,*,/,zero,one,abs,abs2,^,<,<=,>,>=,inv,isnan
-import LinearAlgebra: conj
-import Random: rand
-import Primes: isprime
-
-export getVal,getMod,Modulus,getInvs,hasInverse
-
 struct Modulus{N} <: Number
     a::Real
     function Modulus{N}(a) where N
