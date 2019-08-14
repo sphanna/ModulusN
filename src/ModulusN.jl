@@ -14,7 +14,7 @@
 module ModulusN
 
 using LinearAlgebra, Primes, Random
-import Base: +,-,*,/,zero,one,abs,abs2,^,<,<=,>,>=,inv,isnan,convert,promote_rule
+import Base: convert,promote_rule,+,-,*,/,zero,one,abs,abs2,^,<,<=,>,>=,inv,isnan
 import LinearAlgebra: conj
 import Random: rand
 import Primes: isprime
@@ -22,89 +22,40 @@ import Primes: isprime
 export getVal,getMod,Modulus,getInvs,hasInverse
 
 struct Modulus{N} <: Number
-    a::Real
-    function Modulus{N}(a) where N
+    val::Real
+    function Modulus{N}(val) where N
         @assert N isa Real
-        new{N}(mod(a,N))
+        @assert N != 0
+        new{N}(mod(val,N))
     end
-    Modulus{N}(x::Modulus{N}) where N = Modulus{N}(x.a)
+    Modulus{N}(x::Modulus{N}) where N = Modulus{N}(x.val)
 end
 
 convert(::Modulus{N}, x::M) where {N,M<:Real} = Modulus{N}(x)
 promote_rule(::Type{Modulus{N}}, ::Type{M}) where {N,M<:Real} = Modulus{N}
 promote_rule(::Type{M}, ::Type{Modulus{N}}) where {N,M<:Real} = Modulus{N}
 
-function getVal(x::Modulus{N}) where N
-    return x.a
-end
+getVal(x::Modulus{N}) where N = return x.val
+getMod(x::Modulus{N}) where N = return N
 
-function getMod(x::Modulus{N}) where N
-    return N
-end
++(x::Modulus{N},y::Modulus{N}) where N = Modulus{N}(x.val + y.val)
+-(x::Modulus{N},y::Modulus{N}) where N = Modulus{N}(x.val - y.val)
+*(x::Modulus{N},y::Modulus{N}) where N = Modulus{N}(x.val * y.val)
+/(x::Modulus{N},y::Modulus{N}) where N = inv(y) * x
+-(x::Modulus{N}) where N = Modulus{N}(-x.val)
+zero(x::Modulus{N}) where N = Modulus{N}(0)
+one(x::Modulus{N}) where N = Modulus{N}(1)
+abs(x::Modulus{N}) where N = Modulus{N}(abs(x.val))
+^(x::Modulus{N}, y::Int) where N = Modulus{N}(x.val^y)
+abs2(x::Modulus{N}) where N = abs(x)^2
 
-function +(x::Modulus{N},y::Modulus{N}) where N
-    Modulus{N}(x.a + y.a)
-end
+<(x::Modulus{N}, y::Modulus{N}) where N = x.val < y.val
+<=(x::Modulus{N}, y::Modulus{N}) where N = x.val <= y.val
+>(x::Modulus{N}, y::Modulus{N}) where N = x.val > y.val
+>=(x::Modulus{N}, y::Modulus{N}) where N = x.val >= y.val
 
-function -(x::Modulus{N},y::Modulus{N}) where N
-    Modulus{N}(x.a - y.a)
-end
-
-function -(x::Modulus{N}) where N
-    Modulus{N}(-x.a)
-end
-
-function *(x::Modulus{N},y::Modulus{N}) where N
-    Modulus{N}(x.a * y.a)
-end
-
-function /(x::Modulus{N},y::Modulus{N}) where N
-    return inv(y) * x
-end
-
-function zero(x::Modulus{N}) where N
-    return Modulus{N}(0)
-end
-
-function one(x::Modulus{N}) where N
-    return Modulus{N}(1)
-end
-
-function abs(x::Modulus{N}) where N
-    return Modulus{N}(abs(x.a))
-end
-
-function ^(x::Modulus{N}, y::Int) where N
-    return Modulus{N}(x.a^y)
-end
-
-function abs2(x::Modulus{N}) where N
-    return abs(x)^2
-end
-
-function <(x::Modulus{N}, y::Modulus{N}) where N
-    return x.a < y.a
-end
-
-function <=(x::Modulus{N}, y::Modulus{N}) where N
-    return x.a <= y.a
-end
-
-function >(x::Modulus{N}, y::Modulus{N}) where N
-    return x.a > y.a
-end
-
-function >=(x::Modulus{N}, y::Modulus{N}) where N
-    return x.a >= y.a
-end
-
-function isnan(x::Modulus{N}) where N
-    return isnan(x.a)
-end
-
-function conj(x::Modulus{N}) where N
-    return abs(x)
-end
+isnan(x::Modulus{N}) where N = isnan(x.val)
+conj(x::Modulus{N}) where N = abs(x)
 
 function inv(x::Modulus{N}) where N
     invs = getInvs(x)
