@@ -14,7 +14,7 @@
 module ModulusN
 
 using LinearAlgebra, Random, Primes
-import Base: convert,promote_rule,+,-,*,/,zero,one,abs,abs2,^,<,<=,>,>=,inv,isnan
+import Base: convert,promote_rule,+,-,*,/,zero,one,abs,abs2,^,<,<=,>,>=,==,isequal,inv,isnan
 import LinearAlgebra: conj
 import Random: rand
 import Primes: isprime
@@ -53,6 +53,8 @@ abs2(x::Modulus{N}) where N = abs(x)^2
 <=(x::Modulus{N}, y::Modulus{N}) where N = x.val <= y.val
 >(x::Modulus{N}, y::Modulus{N}) where N = x.val > y.val
 >=(x::Modulus{N}, y::Modulus{N}) where N = x.val >= y.val
+==(x::Modulus{N}, y::Modulus{M}) where {N,M} = x.val == y.val && N==M
+isequal(x::Modulus{N}, y::Modulus{M}) where {N,M} = x.val == y.val && N==M
 
 isnan(x::Modulus{N}) where N = isnan(x.val)
 conj(x::Modulus{N}) where N = abs(x)
