@@ -31,7 +31,7 @@ julia> a*b
 Modulus{4}(2)
 ```
 
-The module provides support for the following simple operations and conditionals: +,-,*,/,^,abs,abs2,<,>,<=,>=
+The module provides support for the following simple operations and conditionals: +,-,*,/,^,abs,abs2,<,>,<=,>=,==
 
 In addition support for finding an inverse element is also implemented:
 ```julia
@@ -49,6 +49,18 @@ Modulus{6}(4)
 
 julia> inv(b)
 ERROR: No inverse exists.
+```
+
+Automatic promotion and conversion is implemented for real value operations.  Real values are converted to the modulus of the type operated against.
+```julia
+julia> a = Modulus{5}(9)
+Modulus{6}(4)
+
+julia> a + 3
+Modulus{5}(2)
+
+julia> a / 3
+Modulus{5}(3)
 ```
 
 Additional functionality (namely, defining a one and zero element) is provided to allow creation of Matrices of Modulus types that work well with the LinearAlgebra package:
