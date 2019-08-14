@@ -19,7 +19,7 @@ import LinearAlgebra: conj
 import Random: rand
 import Primes: isprime
 
-export getVal,getMod,Modulus,getInvs,hasInverse
+export getVal,getMod,Modulus,hasInverse
 
 struct Modulus{N} <: Number
     val::Real
