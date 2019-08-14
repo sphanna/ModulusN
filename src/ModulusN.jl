@@ -1,5 +1,5 @@
 #Code written by Scott Hanna 6/27/2019
-#Last Update: 7/31/2019
+#Last Update: 8/14/2019
 #Contact: shanna7@jhu.edu
 #
 #The Modulus type is here defined as the residue class of a modulo n where
@@ -14,7 +14,7 @@
 module ModulusN
 
 using LinearAlgebra, Primes, Random
-import Base: +,-,*,/,zero,one,abs,abs2,^,<,<=,>,>=,inv,isnan
+import Base: +,-,*,/,zero,one,abs,abs2,^,<,<=,>,>=,inv,isnan,convert,promote_rule
 import LinearAlgebra: conj
 import Random: rand
 import Primes: isprime
@@ -29,6 +29,10 @@ struct Modulus{N} <: Number
     end
     Modulus{N}(x::Modulus{N}) where N = Modulus{N}(x.a)
 end
+
+convert(::Modulus{N}, x::M) where {N,M<:Real} = Modulus{N}(x)
+promote_rule(::Type{Modulus{N}}, ::Type{M}) where {N,M<:Real} = Modulus{N}
+promote_rule(::Type{M}, ::Type{Modulus{N}}) where {N,M<:Real} = Modulus{N}
 
 function getVal(x::Modulus{N}) where N
     return x.a
