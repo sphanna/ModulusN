@@ -13,7 +13,7 @@
 #but the set is still not considered a field.
 module ModulusN
 
-using LinearAlgebra, Primes, Random
+using LinearAlgebra, Random, Primes
 import Base: convert,promote_rule,+,-,*,/,zero,one,abs,abs2,^,<,<=,>,>=,inv,isnan
 import LinearAlgebra: conj
 import Random: rand
@@ -58,25 +58,15 @@ isnan(x::Modulus{N}) where N = isnan(x.val)
 conj(x::Modulus{N}) where N = abs(x)
 
 function inv(x::Modulus{N}) where N
-    invs = getInvs(x)
-    if length(invs) == 0
-        error("No inverse exists.")
+    divs,v = gcdx(x.val,N)
+    if divs != 1 || N == 1
+        error("No Inverse Exists")
     end
-    return invs[1]
-end
-
-function getInvs(x::Modulus{N}) where N
-    if Primes.isprime(N)
-        invs = [x^(N-2)] #euler method
-    else
-        invs = [Modulus{N}(i) for i=1:1:(N-1)]
-        filter!(s -> s*x==one(x), invs)
-    end
-    return invs
+    return Modulus{N}(v)
 end
 
 function hasInverse(x::Modulus{N}) where N
-    return length(getInvs(x)) > 0
+    return gcd(x.val,N)==1 && N != 1
 end
 
 rand(rng::AbstractRNG, ::Random.SamplerType{Modulus{N}}) where N = Modulus{N}(rand(rng,Int))
