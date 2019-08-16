@@ -13,11 +13,10 @@
 #but the set is still not considered a field.
 module ModulusN
 
-using LinearAlgebra, Random, Primes
+using LinearAlgebra, Random
 import Base: convert,promote_rule,+,-,*,/,zero,one,abs,abs2,^,<,<=,>,>=,==,isequal,inv,isnan
 import LinearAlgebra: conj
 import Random: rand
-import Primes: isprime
 
 export getVal,getMod,Modulus,hasInverse
 
